@@ -13,18 +13,18 @@
 //============================================================================
 //	stuff you will need
 //============================================================================
-//TODO define a structure to track words and number of times they occur
+// define a structure to track words and number of times they occur
 
 struct entry {
 	std::string word;
 	int numberOccurrences;
 };
 
-//TODO add a global array of entry structs (global to this file)
+// add a global array of entry structs (global to this file)
 
 entry entries [constants::MAX_WORDS];
 
-//TODO add variable to keep track of next available slot in array
+// add variable to keep track of next available slot in array
 
 int nextIndex = 0;
 
@@ -39,7 +39,7 @@ void clearArray() {
 
 // How many unique words are in array
 int getArraySize() {
-
+	return nextIndex;
 }
 
 // Get data at a particular location
