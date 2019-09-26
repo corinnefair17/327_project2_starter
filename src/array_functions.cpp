@@ -22,7 +22,7 @@ struct entry {
 
 // add a global array of entry structs (global to this file)
 
-entry entries [constants::MAX_WORDS];
+entry entries[constants::MAX_WORDS];
 
 // add variable to keep track of next available slot in array
 
@@ -33,7 +33,7 @@ int nextIndex = 0;
 // Zero out array that tracks words and their occurrences
 void clearArray() {
 	for (int i = 0; i < constants::MAX_WORDS; i++) {
-		entries[i] = {"", -1};
+		entries[i] = { "", -1 };
 	}
 }
 
@@ -44,12 +44,12 @@ int getArraySize() {
 
 // Get data at a particular location
 std::string getArrayWordAt(int i) {
-
+	return "";
 }
 
 // Get data at a particular location
 int getArrayWord_NumbOccur_At(int i) {
-
+	return -1;
 }
 
 /*
@@ -59,7 +59,7 @@ int getArrayWord_NumbOccur_At(int i) {
  *         true : otherwise
  */
 bool processFile(std::fstream &myfstream) {
-
+	return false;
 }
 
 /*
@@ -79,13 +79,13 @@ void processToken(std::string &token) {
  * If you are debugging, the file must be in the project parent directory
  * In this case Project2 with the .project and .cProject files
  */
-bool openFile(std::fstream& myfile, const std::string& myFileName,
+bool openFile(std::fstream &myfile, const std::string &myFileName,
 		std::ios_base::openmode mode) {
-
+	return false;
 }
 
 // Iff myfile is open then close it
-void closeFile(std::fstream& myfile) {
+void closeFile(std::fstream &myfile) {
 
 }
 
@@ -96,7 +96,7 @@ void closeFile(std::fstream& myfile) {
  *          SUCCESS if all data is written and outputfilename closes OK
  */
 int writeArraytoFile(const std::string &outputfilename) {
-
+	return -1;
 }
 
 /*
