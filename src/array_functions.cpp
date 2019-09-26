@@ -33,8 +33,9 @@ int nextIndex = 0;
 // Zero out array that tracks words and their occurrences
 void clearArray() {
 	for (int i = 0; i < constants::MAX_WORDS; i++) {
-		entries[i] = { "", -1 };
+		entries[i] = { "", 0 };
 	}
+	nextIndex = 0;
 }
 
 // How many unique words are in array
