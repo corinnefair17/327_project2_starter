@@ -22,7 +22,11 @@ struct entry {
 
 //TODO add a global array of entry structs (global to this file)
 
+entry entries [constants::MAX_WORDS];
+
 //TODO add variable to keep track of next available slot in array
+
+int nextIndex = 0;
 
 //TODO define all functions in header file
 
