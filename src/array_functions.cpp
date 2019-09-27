@@ -10,6 +10,7 @@
 //============================================================================
 #include <iostream>
 #include "array_functions.h"
+#include <sstream>
 //============================================================================
 //	stuff you will need
 //============================================================================
@@ -60,7 +61,11 @@ int getArrayWord_NumbOccur_At(int i) {
  *         true : otherwise
  */
 bool processFile(std::fstream &myfstream) {
-	return false;
+	if (!myfstream.is_open()) {
+		return false;
+	}
+
+
 }
 
 /*
@@ -68,12 +73,28 @@ bool processFile(std::fstream &myfstream) {
  * Feed each token to processToken for recording
  */
 void processLine(std::string &myString) {
+	std::stringstream ss(myString);
+	std::string tempToken;
 
+	while(std::getline(ss, tempToken, constants::CHAR_TO_SEARCH_FOR)) {
+		processToken(tempToken);
+	}
 }
 
 // Keep track of how many times each token is seen
 void processToken(std::string &token) {
-
+	bool found = false;
+	for (int i = 0; i < nextIndex; i++) {
+		if (token == entries[i].word) {
+			found = true;
+			entries[i].numberOccurrences++;
+		}
+	}
+	if (!found) {
+		entries[nextIndex].word = token;
+		entries[nextIndex].numberOccurrences = 1;
+		nextIndex++;
+	}
 }
 
 /*
