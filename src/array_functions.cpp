@@ -45,12 +45,12 @@ int getArraySize() {
 
 // Get data at a particular location
 std::string getArrayWordAt(int i) {
-	return "";
+	return entries[i].word;
 }
 
 // Get data at a particular location
 int getArrayWord_NumbOccur_At(int i) {
-	return -1;
+	return entries[i].numberOccurrences;
 }
 
 /*
@@ -82,12 +82,15 @@ void processToken(std::string &token) {
  */
 bool openFile(std::fstream &myfile, const std::string &myFileName,
 		std::ios_base::openmode mode) {
-	return false;
+	myfile.open(myFileName.c_str(), mode);
+	return true;
 }
 
 // Iff myfile is open then close it
 void closeFile(std::fstream &myfile) {
-
+	if (myfile.is_open()) {
+		myfile.close();
+	}
 }
 
 /*
@@ -102,11 +105,11 @@ int writeArraytoFile(const std::string &outputfilename) {
 
 /*
  * Sort myEntryArray based on some enum value
- * You must provide a solution that handes alphabetic sorting (A-Z)
+ * You must provide a solution that handles alphabetic sorting (A-Z)
  * The presence of the enum implies a switch statement based on its value
  */
 void sortArray(constants::sortOrder so) {
 
 }
 
-//TODO look in utilities.h for useful functions, particularly strip_unwanted_chars!
+// look in utilities.h for useful functions, particularly strip_unwanted_chars!
