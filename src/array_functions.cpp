@@ -10,6 +10,7 @@
 //============================================================================
 #include <iostream>
 #include "array_functions.h"
+#include "utilities.h"
 #include <sstream>
 //============================================================================
 //	stuff you will need
@@ -65,7 +66,7 @@ bool processFile(std::fstream &myfstream) {
 		return false;
 	}
 
-
+	return false;
 }
 
 /*
@@ -84,13 +85,14 @@ void processLine(std::string &myString) {
 // Keep track of how many times each token is seen
 void processToken(std::string &token) {
 	bool found = false;
+	strip_unwanted_chars(token);
 	for (int i = 0; i < nextIndex; i++) {
 		if (token == entries[i].word) {
 			found = true;
 			entries[i].numberOccurrences++;
 		}
 	}
-	if (!found) {
+	if (!found && token != "") {
 		entries[nextIndex].word = token;
 		entries[nextIndex].numberOccurrences = 1;
 		nextIndex++;
@@ -121,7 +123,7 @@ void closeFile(std::fstream &myfile) {
  *          SUCCESS if all data is written and outputfilename closes OK
  */
 int writeArraytoFile(const std::string &outputfilename) {
-	return -1;
+	return -10;
 }
 
 /*
