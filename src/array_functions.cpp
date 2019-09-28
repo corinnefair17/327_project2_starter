@@ -66,7 +66,12 @@ bool processFile(std::fstream &myfstream) {
 		return false;
 	}
 
-	return false;
+	std::string line;
+	while (!myfstream.eof()) {
+		getline(myfstream, line);
+		processLine(line);
+	}
+	return true;
 }
 
 /*
@@ -85,14 +90,18 @@ void processLine(std::string &myString) {
 // Keep track of how many times each token is seen
 void processToken(std::string &token) {
 	bool found = false;
-	strip_unwanted_chars(token);
+	bool notEmpty = strip_unwanted_chars(token);
+	std::string tokenCopy = token;
+	toUpper(tokenCopy);
 	for (int i = 0; i < nextIndex; i++) {
-		if (token == entries[i].word) {
+		std::string entryCopy = entries[i].word;
+		toUpper(entryCopy);
+		if (tokenCopy == entryCopy) {
 			found = true;
 			entries[i].numberOccurrences++;
 		}
 	}
-	if (!found && token != "") {
+	if (!found && notEmpty) {
 		entries[nextIndex].word = token;
 		entries[nextIndex].numberOccurrences = 1;
 		nextIndex++;
@@ -106,6 +115,9 @@ void processToken(std::string &token) {
 bool openFile(std::fstream &myfile, const std::string &myFileName,
 		std::ios_base::openmode mode) {
 	myfile.open(myFileName.c_str(), mode);
+	if (myfile.fail()) {
+		return false;
+	}
 	return true;
 }
 
@@ -132,7 +144,49 @@ int writeArraytoFile(const std::string &outputfilename) {
  * The presence of the enum implies a switch statement based on its value
  */
 void sortArray(constants::sortOrder so) {
-
+	switch(so) {
+	case constants::ASCENDING:
+		for (int i = 1; i < nextIndex; i++) {
+			for (int j = 1; j < nextIndex; j++) {
+				if (entries[j-1].word > entries[j].word) {
+					entry tempEntry;
+					tempEntry.word = entries[j-1].word;
+					tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
+					entries[j-1] = entries[j];
+					entries[j] = tempEntry;
+				}
+			}
+		}
+		break;
+	case constants::DESCENDING:
+		for (int i = 1; i < nextIndex; i++) {
+					for (int j = 1; j < nextIndex; j++) {
+						if (entries[j-1].word < entries[j].word) {
+							entry tempEntry;
+							tempEntry.word = entries[j-1].word;
+							tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
+							entries[j-1] = entries[j];
+							entries[j] = tempEntry;
+						}
+					}
+				}
+		break;
+	case constants::NUMBER_OCCURRENCES:
+		for (int i = 1; i < nextIndex; i++) {
+					for (int j = 1; j < nextIndex; j++) {
+						if (entries[j-1].numberOccurrences < entries[j].numberOccurrences) {
+							entry tempEntry;
+							tempEntry.word = entries[j-1].word;
+							tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
+							entries[j-1] = entries[j];
+							entries[j] = tempEntry;
+						}
+					}
+				}
+		break;
+	default:
+		break;
+	}
 }
 
 // look in utilities.h for useful functions, particularly strip_unwanted_chars!
