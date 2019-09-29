@@ -82,7 +82,7 @@ void processLine(std::string &myString) {
 	std::stringstream ss(myString);
 	std::string tempToken;
 
-	while(std::getline(ss, tempToken, constants::CHAR_TO_SEARCH_FOR)) {
+	while (std::getline(ss, tempToken, constants::CHAR_TO_SEARCH_FOR)) {
 		processToken(tempToken);
 	}
 }
@@ -115,10 +115,7 @@ void processToken(std::string &token) {
 bool openFile(std::fstream &myfile, const std::string &myFileName,
 		std::ios_base::openmode mode) {
 	myfile.open(myFileName.c_str(), mode);
-	if (myfile.fail()) {
-		return false;
-	}
-	return true;
+	return myfile.good();
 }
 
 // Iff myfile is open then close it
@@ -135,7 +132,22 @@ void closeFile(std::fstream &myfile) {
  *          SUCCESS if all data is written and outputfilename closes OK
  */
 int writeArraytoFile(const std::string &outputfilename) {
-	return -10;
+	if (nextIndex == 0) {
+		return constants::FAIL_NO_ARRAY_DATA;
+	}
+	std::ofstream myfile;
+	myfile.open(outputfilename);
+	if (myfile.fail()) {
+		return constants::FAIL_FILE_DID_NOT_OPEN;
+	}
+
+	for (int i = 0; i < nextIndex; i++) {
+		myfile << entries[i].word << " " << entries[i].numberOccurrences
+				<< std::endl;
+	}
+	myfile.close();
+
+	return constants::SUCCESS;
 }
 
 /*
@@ -144,15 +156,20 @@ int writeArraytoFile(const std::string &outputfilename) {
  * The presence of the enum implies a switch statement based on its value
  */
 void sortArray(constants::sortOrder so) {
-	switch(so) {
+	switch (so) {
 	case constants::ASCENDING:
 		for (int i = 1; i < nextIndex; i++) {
 			for (int j = 1; j < nextIndex; j++) {
-				if (entries[j-1].word > entries[j].word) {
+				std::string firstEntry = entries[j - 1].word;
+				toUpper(firstEntry);
+				std::string secondEntry = entries[j].word;
+				toUpper(secondEntry);
+				if (firstEntry > secondEntry) {
 					entry tempEntry;
-					tempEntry.word = entries[j-1].word;
-					tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
-					entries[j-1] = entries[j];
+					tempEntry.word = entries[j - 1].word;
+					tempEntry.numberOccurrences =
+							entries[j - 1].numberOccurrences;
+					entries[j - 1] = entries[j];
 					entries[j] = tempEntry;
 				}
 			}
@@ -160,29 +177,36 @@ void sortArray(constants::sortOrder so) {
 		break;
 	case constants::DESCENDING:
 		for (int i = 1; i < nextIndex; i++) {
-					for (int j = 1; j < nextIndex; j++) {
-						if (entries[j-1].word < entries[j].word) {
-							entry tempEntry;
-							tempEntry.word = entries[j-1].word;
-							tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
-							entries[j-1] = entries[j];
-							entries[j] = tempEntry;
-						}
-					}
+			for (int j = 1; j < nextIndex; j++) {
+				std::string firstEntry = entries[j - 1].word;
+				toUpper(firstEntry);
+				std::string secondEntry = entries[j].word;
+				toUpper(secondEntry);
+				if (firstEntry < secondEntry) {
+					entry tempEntry;
+					tempEntry.word = entries[j - 1].word;
+					tempEntry.numberOccurrences =
+							entries[j - 1].numberOccurrences;
+					entries[j - 1] = entries[j];
+					entries[j] = tempEntry;
 				}
+			}
+		}
 		break;
 	case constants::NUMBER_OCCURRENCES:
 		for (int i = 1; i < nextIndex; i++) {
-					for (int j = 1; j < nextIndex; j++) {
-						if (entries[j-1].numberOccurrences < entries[j].numberOccurrences) {
-							entry tempEntry;
-							tempEntry.word = entries[j-1].word;
-							tempEntry.numberOccurrences = entries[j-1].numberOccurrences;
-							entries[j-1] = entries[j];
-							entries[j] = tempEntry;
-						}
-					}
+			for (int j = 1; j < nextIndex; j++) {
+				if (entries[j - 1].numberOccurrences
+						< entries[j].numberOccurrences) {
+					entry tempEntry;
+					tempEntry.word = entries[j - 1].word;
+					tempEntry.numberOccurrences =
+							entries[j - 1].numberOccurrences;
+					entries[j - 1] = entries[j];
+					entries[j] = tempEntry;
 				}
+			}
+		}
 		break;
 	default:
 		break;
